@@ -12,5 +12,8 @@ fi
 
 PARAMS=$1
 
-EXP= $(grep experiment_name: $PARAMS | awk '{ print $2 }')
-echo "experiment name = "$EXP
+EXP=$(grep experiment_name: $PARAMS | awk '{ print $2 }')
+echo "      experiment name = "$EXP
+
+EXP=$(grep number_samples: $PARAMS | awk '{ print $2 }')
+echo "      number samples = "$EXP
