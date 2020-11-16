@@ -1,2 +1,9 @@
 experiment_name: polycomb
 number_samples: 4
+working_directory: /home/gabfergar/tmp/ 
+annotation: /home/gabfergar/rnaseqdata/chr5.gtf
+genome: /home/gabfergar/rnaseqdata/chr5.fa
+sample_1: /home/gabfergar/rnaseqdata/abc_7dag_chr5_1.fastq.gz
+sample_2: /home/gabfergar/rnaseqdata/abc_7dag_chr5_2.fastq.gz
+sample_3: /home/gabfergar/rnaseqdata/col0_7dag_chr5_1.fastq.gz
+sample_4: /home/gabfergar/rnaseqdata/col0_7dag_chr5_2.fastq.gz
