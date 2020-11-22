@@ -93,9 +93,10 @@ echo "=============================="
 echo ""
 
 cd ../samples
+i=1
 while [ $i -le $NUM_SAMPLES ]
 do
-        cd sample_$i
+	cd sample_$i
 	gzip -d sample_$i.fastqc.gz
 	fastqc sample_$i.fastqc
 	cd ..
@@ -110,21 +111,10 @@ echo "========================="
 echo ""
 
 
-
+i=1
 while [ $i -le $NUM_SAMPLES ]
 do
 	cd sample_$i
-	if [ -f SRR5602506_2.fastq ]
-then
-   fastqc SRR5602506_1.fastq
-   fastqc SRR5602506_2.fastq
-
-   hisat2 --dta -x ../../genome/index -1 SRR5602506_1.fastq -2 SRR5602506_2.fastq -S lux6_2.sam
-else
-   fastqc SRR5602506_1.fastq
-
-   hisat2 --dta -x ../../genome/index -U SRR5602506_1.fastq -S lux6_2.sam
-fi
 	hisat2 --dta -x ../../genome/index -U sample_$i.fastqc -S sample_$i.sam
 	cd ..
  	((i++))
