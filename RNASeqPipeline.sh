@@ -7,7 +7,7 @@ then
     echo "    Usage: bash RNASeqPipeline.sh <params_file>"
     echo ""
     echo "    params_file: imput file with the parameters."
-    echo ""
+    echo "    Example of params_file in test_params."
     exit
 fi
 
@@ -85,40 +85,49 @@ extract_exons.py annotation.gtf > exons.exon
 cd ../genome
 hisat2-build --ss ../annotation/splice_sites.ss --exon ../annotation/exons.exon genome.fa index
 
-#Quality analysis of samples fastq files by FASTQC.
+
+#Processing samples.
 echo ""
-echo "=============================="
-echo "| QUALITY CONTROL OF SAMPLES |"
-echo "=============================="
+echo "======================="
+echo "|  SAMPLE PROCESSING  |"
+echo "======================="
 echo ""
 
-cd ../samples
+cd ../results
+touch blackboard.txt
 i=1
 while [ $i -le $NUM_SAMPLES ]
 do
-	cd sample_$i
-	gzip -d sample_$i.fastqc.gz
-	fastqc sample_$i.fastqc
-	cd ..
-	((i++))
+        qsub -o sample_$i -N sample_$i rna_sample_processing $WORK_DIR/$EXP/samples/sample_$i $i $NUM_SAMPLES
+        ((i++))
 done
 
-#Mapping of lectures to reference genome by HISAT2.
+#Whole transcriptome assembly and comparison to reference genome.
 echo ""
-echo "========================="
-echo "|   MAPPING BY HISAT2   |"
-echo "========================="
+echo "===================================="
+echo "|   WHOLE TRANSCRIPTOME ASSEMBLY   |"
+echo "===================================="
+echo ""
+
+cd ../results
+stringtie --merge -G ../annotation/annotation.gtf -o stringtie_merged.gtf merge_list.txt
+gffcompare -r ../annotation/annotation.gtf -G -o comparison stringtie_merged.gtf
+
+#Gene Expression Quantification in each and every sample.
+echo ""
+echo "===================================="
+echo "|  GENE EXPRESSION QUANTIFICATION  |"
+echo "===================================="
 echo ""
 
 
 i=1
 while [ $i -le $NUM_SAMPLES ]
 do
-	cd sample_$i
-	hisat2 --dta -x ../../genome/index -U sample_$i.fastqc -S sample_$i.sam
-	cd ..
- 	((i++))
+        cd sample_$i
+        stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.bam
+        cd ..
+        ((i++))
 done
-
 
 echo "Analysis complete :)"
