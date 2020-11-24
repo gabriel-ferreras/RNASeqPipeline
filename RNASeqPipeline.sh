@@ -18,8 +18,11 @@ echo "======================"
 echo "| LOADING PARAMETERS |"
 echo "======================"
 echo ""
+INS_DIR=$(grep installation_directory: $PARAMS | awk '{ print $2 }')
+echo "      Installation directory is "$WORK_DIR
+
 WORK_DIR=$(grep working_directory: $PARAMS | awk '{ print $2 }')
-echo "      Working directory = "$WORK_DIR
+echo "      Working directory is "$WORK_DIR
 
 EXP=$(grep experiment_name: $PARAMS | awk '{ print $2 }')
 echo "      Experiment name = "$EXP
@@ -94,40 +97,11 @@ echo "======================="
 echo ""
 
 cd ../results
-touch blackboard.txt
-i=1
-while [ $i -le $NUM_SAMPLES ]
-do
-        qsub -o sample_$i -N sample_$i rna_sample_processing $WORK_DIR/$EXP/samples/sample_$i $i $NUM_SAMPLES
-        ((i++))
-done
-
-#Whole transcriptome assembly and comparison to reference genome.
-echo ""
-echo "===================================="
-echo "|   WHOLE TRANSCRIPTOME ASSEMBLY   |"
-echo "===================================="
-echo ""
-
-cd ../results
-stringtie --merge -G ../annotation/annotation.gtf -o stringtie_merged.gtf merge_list.txt
-gffcompare -r ../annotation/annotation.gtf -G -o comparison stringtie_merged.gtf
-
-#Gene Expression Quantification in each and every sample.
-echo ""
-echo "===================================="
-echo "|  GENE EXPRESSION QUANTIFICATION  |"
-echo "===================================="
-echo ""
-
 
 i=1
 while [ $i -le $NUM_SAMPLES ]
 do
-        cd sample_$i
-        stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.bam
-        cd ..
+        qsub -o sample_$i -N sample_$i $INS_DIR/RNASeqPipeline/rna_sample_processing.sh $WORK_DIR/$EXP/samples/sample_$i $i $NUM_SAMPLES $INS_DIR
         ((i++))
 done
 
-echo "Analysis complete :)"

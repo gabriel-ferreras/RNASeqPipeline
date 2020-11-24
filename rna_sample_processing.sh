@@ -6,6 +6,13 @@
 SAMPLE_DIR=$1
 i=$2
 NUM_SAMPLES=$3
+INS_DIR=$4
+
+echo ""
+echo "============================"
+echo "|   PROCESSING SAMPLE $i   |"
+echo "============================"
+echo ""
 
 cd $SAMPLE_DIR
 
@@ -23,7 +30,7 @@ samtools index sample_$i.bam
 stringtie -G ../../annotation/annotation.gtf -o sample_$i.gtf -l sample_$i sample_$i.bam
 
 ## Preparing merge list file for transcriptome merging.
-echo $SAMPLE_DIR/sample_$i.gtf > ../../results/merge_list.txt
+echo $SAMPLE_DIR/sample_$i.gtf >> ../../results/merge_list.txt
 
 ## Communication with blackboard.
 echo "Processing Sample $i done!" >> ../../results/blackboard.txt
@@ -31,5 +38,9 @@ NUM_PROC=$(wc -l ../../results/blackboard.txt)
 
 if [ $NUM_PROC -eq $NUM_SAMPLES ]
 do
-
+	echo "Hasta ahora ha salio niño"
+	qsub -o merge -N merge $INS_DIR/RNASeqPipeline/transcriptome_merging.sh $SAMPLE_DIR/../../results $NUM_SAMPLES
 done
+echo ""
+echo "   Sample $i processing DONE!!"
+echo ""

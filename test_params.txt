@@ -1,5 +1,6 @@
 experiment_name: polycomb
 number_samples: 4
+installation_directory: /home/gabfergar/github_repositories/
 working_directory: /home/gabfergar/tmp/ 
 path_annotation: /home/gabfergar/rnaseqdata/chr5.gtf
 path_genome: /home/gabfergar/rnaseqdata/chr5.fa
