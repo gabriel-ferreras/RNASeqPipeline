@@ -37,10 +37,9 @@ echo "Processing Sample $i done!" >> ../../results/blackboard.txt
 NUM_PROC=$(wc -l ../../results/blackboard.txt)
 
 if [ $NUM_PROC -eq $NUM_SAMPLES ]
-do
-	echo "Hasta ahora ha salio niño"
+then
 	qsub -o merge -N merge $INS_DIR/RNASeqPipeline/transcriptome_merging.sh $SAMPLE_DIR/../../results $NUM_SAMPLES
-done
+fi
 echo ""
 echo "   Sample $i processing DONE!!"
 echo ""

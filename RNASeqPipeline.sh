@@ -19,7 +19,7 @@ echo "| LOADING PARAMETERS |"
 echo "======================"
 echo ""
 INS_DIR=$(grep installation_directory: $PARAMS | awk '{ print $2 }')
-echo "      Installation directory is "$WORK_DIR
+echo "      Installation directory is "$INS_DIR
 
 WORK_DIR=$(grep working_directory: $PARAMS | awk '{ print $2 }')
 echo "      Working directory is "$WORK_DIR
@@ -71,7 +71,7 @@ i=1
 while [ $i -le $NUM_SAMPLES ]
 do
 	j=$((i - 1))
-        cp ${SAMPLES[j]} $WORK_DIR/$EXP/samples/sample_$i/sample_$i.fastqc.gz
+        cp ${SAMPLES[j]} $WORK_DIR/$EXP/samples/sample_$i/sample_$i.fastq.gz
         ((i++))
 done
 
