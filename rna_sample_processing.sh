@@ -23,7 +23,7 @@ hisat2 --dta -x ../../genome/index -U sample_$i.fastq.gz -S sample_$i.sam
 ## Generating sorted bam file
 samtools sort -o sample_$i.bam sample_$i.sam
 rm sample_$i.sam
-rm *.fastq
+rm *.fastq.gz
 samtools index sample_$i.bam
 
 ## Transcript assembly
@@ -34,12 +34,13 @@ echo $SAMPLE_DIR/sample_$i.gtf >> ../../results/merge_list.txt
 
 ## Communication with blackboard.
 echo "Processing Sample $i done!" >> ../../results/blackboard.txt
-NUM_PROC=$(wc -l ../../results/blackboard.txt)
+NUM_PROC=$(wc -l ../../results/blackboard.txt | cut -c1)
 
 if [ $NUM_PROC -eq $NUM_SAMPLES ]
 then
 	qsub -o merge -N merge $INS_DIR/RNASeqPipeline/transcriptome_merging.sh $SAMPLE_DIR/../../results $NUM_SAMPLES
 fi
+
 echo ""
 echo "   Sample $i processing DONE!!"
 echo ""

@@ -38,7 +38,7 @@ i=1
 while [ $i -le $NUM_SAMPLES ]
 do
         cd sample_$i
-        #stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.bam
+        stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.bam
         cd ..
         ((i++))
 done
