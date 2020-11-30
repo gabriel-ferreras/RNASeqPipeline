@@ -34,7 +34,7 @@ echo $SAMPLE_DIR/sample_$i.gtf >> ../../results/merge_list.txt
 
 ## Communication with blackboard.
 echo "Processing Sample $i done!" >> ../../results/blackboard.txt
-NUM_PROC=$(wc -l ../../results/blackboard.txt | cut -c1)
+NUM_PROC=$(wc -l ../../results/blackboard.txt | awk '{ print $1 }')
 
 if [ $NUM_PROC -eq $NUM_SAMPLES ]
 then

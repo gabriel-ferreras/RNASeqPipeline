@@ -33,15 +33,29 @@ echo "|  GENE EXPRESSION QUANTIFICATION  |"
 echo "===================================="
 echo ""
 
+PER=$(grep Missed exons: comparison.stats | awk '{ print $2 }')
+echo "      Percentage of similiraty of whole transcriptome assembly to reference genome is "$PER
+
 cd ../samples
 i=1
-while [ $i -le $NUM_SAMPLES ]
-do
-        cd sample_$i
-        stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.bam
-        cd ..
-        ((i++))
-done
+if [ $PER -lt 5 ]
+then
+	while [ $i -le $NUM_SAMPLES ]
+	do
+        	cd sample_$i
+        	stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.bam
+        	cd ..
+        	((i++))
+	done
+else
+	while [ $i -le $NUM_SAMPLES ]
+        do
+                cd sample_$i
+                stringtie -e -B -G ../../results/stringtie_merged.gtf -o sample_$i.gtf sample_$i.bam
+                cd ..
+                ((i++))
+        done
+fi
 
 echo "Analysis complete :)"
 
