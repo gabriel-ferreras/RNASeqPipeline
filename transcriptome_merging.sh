@@ -26,36 +26,24 @@ echo ""
 
 gffcompare -r ../annotation/annotation.gtf -G -o comparison stringtie_merged.gtf
 
-#Gene Expression Quantification in each and every sample.
-echo ""
-echo "===================================="
-echo "|  GENE EXPRESSION QUANTIFICATION  |"
-echo "===================================="
-echo ""
+## Warning message if the percentage of novel loci is higher than 5%.
 
-PER=$(grep Missed exons: comparison.stats | awk '{ print $2 }')
-echo "      Percentage of similiraty of whole transcriptome assembly to reference genome is "$PER
+# Option 1: with cut.
+PER=$(grep "Novel loci:" comparison.stats | awk '{ print $5 }' | cut -d"%" -f 1 | cut -d"." -f 1)
 
-cd ../samples
-i=1
-if [ $PER -lt 5 ]
+# Option 2: with sed.
+#PER=$(grep "Novel loci:" comparison.stats | awk '{ print $5 }' | sed "s/%)//g")
+
+if [ $PER -ge 5 ]
 then
-	while [ $i -le $NUM_SAMPLES ]
-	do
-        	cd sample_$i
-        	stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.bam
-        	cd ..
-        	((i++))
-	done
-else
-	while [ $i -le $NUM_SAMPLES ]
-        do
-                cd sample_$i
-                stringtie -e -B -G ../../results/stringtie_merged.gtf -o sample_$i.gtf sample_$i.bam
-                cd ..
-                ((i++))
-        done
+	echo "------------------------------------------------------------------------------------------------"
+	echo "|WARNING: Percentage of difference of whole transcriptome assembly to reference genome is $PER.|"
+	echo "------------------------------------------------------------------------------------------------"
 fi
+
+## Starting R script 
+
+qsub 
 
 echo "Analysis complete :)"
 

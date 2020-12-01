@@ -29,6 +29,9 @@ samtools index sample_$i.bam
 ## Transcript assembly
 stringtie -G ../../annotation/annotation.gtf -o sample_$i.gtf -l sample_$i sample_$i.bam
 
+## Gene expression quantification.
+stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.bam
+
 ## Preparing merge list file for transcriptome merging.
 echo $SAMPLE_DIR/sample_$i.gtf >> ../../results/merge_list.txt
 
