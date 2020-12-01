@@ -7,6 +7,7 @@ SAMPLE_DIR=$1
 i=$2
 NUM_SAMPLES=$3
 INS_DIR=$4
+DESIGN=$5
 
 echo ""
 echo "============================"
@@ -41,7 +42,7 @@ NUM_PROC=$(wc -l ../../results/blackboard.txt | awk '{ print $1 }')
 
 if [ $NUM_PROC -eq $NUM_SAMPLES ]
 then
-	qsub -o merge -N merge $INS_DIR/RNASeqPipeline/transcriptome_merging.sh $SAMPLE_DIR/../../results $NUM_SAMPLES
+	qsub -o merge -N merge $INS_DIR/RNASeqPipeline/transcriptome_merging.sh $SAMPLE_DIR/../../results $INS_DIR $DESIGN
 fi
 
 echo ""

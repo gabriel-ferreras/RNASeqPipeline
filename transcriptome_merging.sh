@@ -4,7 +4,8 @@
 #$ -j yes
 
 RES_DIR=$1
-NUM_SAMPLES=$2
+INS_DIR=$2
+EXP_DESIGN=$3
 
 ## Accessing results folder
 cd $RES_DIR
@@ -41,9 +42,9 @@ then
 	echo "------------------------------------------------------------------------------------------------"
 fi
 
-## Starting R script 
+## Starting R script
 
-qsub 
+RScript $INS_DIR/r script RNA_R_script.r $RESDIR $EXP_DESIGN 
 
 echo "Analysis complete :)"
 

@@ -45,6 +45,10 @@ do
 	echo "      Sample $j in ${SAMPLES[$i]}"
         ((i++))
 done
+
+EXP_DESIGN=$(grep experimental_design: $PARAMS | awk '{ print $2 }')
+echo "      Experimental design in "$EXP_DESIGN
+
 #Preparing working workspace.
 echo ""
 echo "======================"
@@ -101,7 +105,7 @@ cd ../results
 i=1
 while [ $i -le $NUM_SAMPLES ]
 do
-        qsub -o sample_$i -N sample_$i $INS_DIR/RNASeqPipeline/rna_sample_processing.sh $WORK_DIR/$EXP/samples/sample_$i $i $NUM_SAMPLES $INS_DIR
+        qsub -o sample_$i -N sample_$i $INS_DIR/RNASeqPipeline/rna_sample_processing.sh $WORK_DIR/$EXP/samples/sample_$i $i $NUM_SAMPLES $INS_DIR $EXP_DESIGN
         ((i++))
 done
 
