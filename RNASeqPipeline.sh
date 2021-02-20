@@ -46,9 +46,6 @@ do
         ((i++))
 done
 
-EXP_DESIGN=$(grep experimental_design: $PARAMS | awk '{ print $2 }')
-echo "      Experimental design in "$EXP_DESIGN
-
 #Preparing working workspace.
 echo ""
 echo "======================"
@@ -69,8 +66,10 @@ done
 cd ..
 
 #Copying the data.
-cp $ANNOTATION $WORK_DIR/$EXP/annotation/annotation.gtf
-cp $GENOME $WORK_DIR/$EXP/genome/genome.fa
+cp $ANNOTATION $WORK_DIR/$EXP/annotation/annotation.gtf.gz
+gunzip $WORK_DIR/$EXP/annotation/annotation.gtf.gz
+cp $GENOME $WORK_DIR/$EXP/genome/genome.fa.gz
+gunzip $WORK_DIR/$EXP/genome/genome.fa.gz
 i=1
 while [ $i -le $NUM_SAMPLES ]
 do
@@ -105,7 +104,9 @@ cd ../results
 i=1
 while [ $i -le $NUM_SAMPLES ]
 do
-        qsub -o sample_$i -N sample_$i $INS_DIR/RNASeqPipeline/rna_sample_processing.sh $WORK_DIR/$EXP/samples/sample_$i $i $NUM_SAMPLES $INS_DIR $EXP_DESIGN
+        bash $INS_DIR/RNASeqPipeline/rna_sample_processing.sh $WORK_DIR/$EXP/samples/sample_$i $i $NUM_SAMPLES $INS_DIR $EXP_DESIGN
         ((i++))
 done
 
+## Merging
+bash $INS_DIR/RNASeqPipeline/transcriptome_merging.sh $SAMPLE_DIR/../../results $INS_DIR $DESIGN

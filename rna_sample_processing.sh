@@ -36,15 +36,6 @@ stringtie -e -B -G ../../annotation/annotation.gtf -o sample_$i.gtf sample_$i.ba
 ## Preparing merge list file for transcriptome merging.
 echo $SAMPLE_DIR/sample_$i.gtf >> ../../results/merge_list.txt
 
-## Communication with blackboard.
-echo "Processing Sample $i done!" >> ../../results/blackboard.txt
-NUM_PROC=$(wc -l ../../results/blackboard.txt | awk '{ print $1 }')
-
-if [ $NUM_PROC -eq $NUM_SAMPLES ]
-then
-	qsub -o merge -N merge $INS_DIR/RNASeqPipeline/transcriptome_merging.sh $SAMPLE_DIR/../../results $INS_DIR $DESIGN
-fi
-
 echo ""
 echo "   Sample $i processing DONE!!"
 echo ""

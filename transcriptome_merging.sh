@@ -42,9 +42,5 @@ then
 	echo "------------------------------------------------------------------------------------------------"
 fi
 
-## Starting R script
-
-RScript $INS_DIR/r script RNA_R_script.r $RESDIR $EXP_DESIGN 
-
 echo "Analysis complete :)"
 

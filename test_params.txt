@@ -1,15 +1,11 @@
-experiment_name: polycomb
+experiment_name: polycomb_rnaseq
 number_samples: 4
-number_conditions: 2
-condition_1: col0_7
-condition_2: abc_7
-number_replicates: 2
 installation_directory: /home/gabfergar/github_repositories/
 working_directory: /home/gabfergar/tmp/ 
-path_annotation: /home/gabfergar/rnaseqdata/chr5.gtf
-path_genome: /home/gabfergar/rnaseqdata/chr5.fa
-path_sample_1: /home/gabfergar/rnaseqdata/col0_7dag_chr5_1.fastq.gz
-path_sample_2: /home/gabfergar/rnaseqdata/col0_7dag_chr5_2.fastq.gz
-path_sample_3: /home/gabfergar/rnaseqdata/abc_7dag_chr5_1.fastq.gz
-path_sample_4: /home/gabfergar/rnaseqdata/abc_7dag_chr5_2.fastq.gz
+path_annotation: /home/gabfergar/examenBAG2020/rna_seq/annotation/chr5.gtf.gz
+path_genome: /home/gabfergar/examenBAG2020/rna_seq/genome/chr5.fa.gz
+path_sample_1: /home/gabfergar/examenBAG2020/rna_seq/samples/sample_1/abc_7dag_chr5_1.fastq.gz
+path_sample_2: /home/gabfergar/examenBAG2020/rna_seq/samples/sample_2/abc_7dag_chr5_2.fastq.gz
+path_sample_3: /home/gabfergar/examenBAG2020/rna_seq/samples/sample_3/col0_7dag_chr5_1.fastq.gz
+path_sample_4: /home/gabfergar/examenBAG2020/rna_seq/samples/sample_4/col0_7dag_chr5_2.fastq.gz
 
